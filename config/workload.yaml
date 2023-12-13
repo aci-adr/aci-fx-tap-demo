@@ -1,0 +1,35 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: "aci-adr-aci-fx-tap-demo"
+  namespace: aci-adr
+  labels:
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: "aci-adr-aci-fx-tap-demo"
+spec:
+  env:
+    - name: MONGODB_URI
+      valueFrom:
+        secretKeyRef:
+          name: mongo-config
+          key: MONGODB_URI
+    - name: DB_NAME
+      value: "fx_data"
+    - name: STAGE_NAME
+      value: "aci-fx-tap-demo"
+    - name: NATS_URI
+      value: "nats://10.0.217.253:4222"
+    - name: STREAM
+      value: "STREAM_FX_DEMO"
+    - name: CONSUMER
+      value: "STREAM_FX_DEMO_CONSUMER"
+    - name: LISTEN_SUBJECT
+      value: "FX.DEMO"
+    - name: PUBLISH_SUBJECT
+      value: "FX.DEMO.END"
+  source:
+    git:
+      url: REPOSITORY-URL
+      ref:
+        branch: main
