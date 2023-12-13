@@ -21,7 +21,7 @@ import (
 
 func Connect(meter metric.Meter, tp *sdktrace.TracerProvider, js jetstream.JetStream) {
 	//create DB services as needed.
-	var db dal.Database[entity.ForexData] = &dal.MongoDbService[entity.ForexData]{Collection: "forex_data_tap_demo"}
+	var db dal.Database[entity.ForexData] = &dal.MongoDbService[entity.ForexData]{Collection: "forex_data_tap_test"}
 	histogram, _ := meter.Float64Histogram(
 		os.Getenv("STAGE_NAME")+"_duration",
 		metric.WithDescription("The duration of task execution."),
