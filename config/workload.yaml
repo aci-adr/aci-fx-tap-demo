@@ -5,9 +5,17 @@ metadata:
   namespace: aci-adr
   labels:
     apps.tanzu.vmware.com/has-tests: "true"
-    apps.tanzu.vmware.com/workload-type: server
+    apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: "aci-adr-aci-fx-tap-demo"
 spec:
+  params:
+    - name: annotations
+      value:
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "3"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8080"
   env:
     - name: MONGODB_URI
       valueFrom:
@@ -28,8 +36,12 @@ spec:
       value: "FX.DEMO"
     - name: PUBLISH_SUBJECT
       value: "FX.DEMO.END"
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: "http://10.0.152.104:4317"
+    - name: OTEL_SERVICE_NAME
+      value: "aci-fx-tap-demo"
   source:
     git:
-      url: REPOSITORY-URL
+      url: https://github.com/aci-adr/aci-fx-tap-demo.git
       ref:
         branch: main
